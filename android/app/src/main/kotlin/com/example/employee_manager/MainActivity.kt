@@ -1,4 +1,4 @@
-package com.example.wage_manager
+package com.example.employee_manager
 
 import io.flutter.embedding.android.FlutterActivity
 

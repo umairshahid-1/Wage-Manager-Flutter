@@ -1,11 +1,11 @@
 {
-    "name": "wage_manager",
-    "short_name": "wage_manager",
+    "name": "employee_manager",
+    "short_name": "employee_manager",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "This app basically calculate and manages the wage history og the labours.",
+    "description": "A new Flutter project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
