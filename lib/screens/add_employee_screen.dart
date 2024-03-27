@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import '/services/image_picker_service.dart';
+import 'package:image_picker/image_picker.dart';
 import '/utils/constants.dart';
-import '/widgets/reusable_text_field.dart';
+import '/utils/theme.dart';
 import '/models/employee_model.dart';
+import '/widgets/reusable_text_field.dart';
 
 class AddEmployeeScreen extends StatefulWidget {
   final Function(Employee) addEmployee;
-
   const AddEmployeeScreen({super.key, required this.addEmployee});
 
   @override
@@ -22,10 +22,38 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   String? _imagePath;
 
   void _pickImage() async {
-    final imagePath = await getImageFromGallery();
-    setState(() {
-      _imagePath = imagePath;
-    });
+    final ImagePicker picker = ImagePicker();
+    final source = await showDialog<ImageSource>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Select Image Source'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, ImageSource.camera),
+            child: const Text(
+              'Camera',
+              style: TextStyle(color: primaryColorDark),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, ImageSource.gallery),
+            child: const Text(
+              'Gallery',
+              style: TextStyle(color: primaryColorDark),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (source != null) {
+      final pickedFile = await picker.pickImage(source: source);
+      if (pickedFile != null) {
+        setState(() {
+          _imagePath = pickedFile.path;
+        });
+      }
+    }
   }
 
   void _addEmployee() {
@@ -33,8 +61,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
       final employee = Employee(
         id: DateTime.now().millisecondsSinceEpoch,
         name: _nameController.text,
-        workingDays: 1, // Set default working days
-        totalAmount: fixedSalary, // Set fixed salary
+        workingDays: 1,
+        totalAmount: fixedSalary,
         imagePath: _imagePath,
         phoneNumber: _phoneController.text,
         amountReceived: 250,
@@ -56,17 +84,25 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
             GestureDetector(
               onTap: _pickImage,
               child: CircleAvatar(
-                radius: 40.0,
-                backgroundImage: _imagePath != null
-                    ? FileImage(File(_imagePath!))
-                    : const AssetImage('assets/images/placeholder.png')
-                        as ImageProvider,
+                radius: 50.0,
+                backgroundImage:
+                    _imagePath != null ? FileImage(File(_imagePath!)) : null,
+                backgroundColor: Colors.grey.shade200,
+                child: _imagePath == null
+                    ? const Icon(
+                        Icons.person_2,
+                        size: 50.0,
+                        color: primaryColorDark,
+                      )
+                    : null,
               ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 26.0),
             ReusableTextField(
-              controller: _nameController,
+              // For name
               labelText: 'Name',
+              controller: _nameController,
+              keyboardType: TextInputType.text,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a name';
@@ -74,15 +110,38 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 return null;
               },
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 26.0),
             ReusableTextField(
-              controller: _phoneController,
               labelText: 'Phone Number',
-            ),
-            const SizedBox(height: 16.0),
+              controller: _phoneController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: false),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a number';
+                } else if (value.length != 11) {
+                  return 'Please enter a valid number';
+                }
+                return null;
+              },
+            ), // For phone number
+            const SizedBox(height: 26.0),
             ElevatedButton(
               onPressed: _addEmployee,
-              child: const Text('Add Employee'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey.shade100,
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text(
+                'Add',
+                style: TextStyle(
+                    fontSize: 16.0,
+                    color: primaryColorDark,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),

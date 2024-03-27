@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Employee Manager',
+      title: 'Wage Manager',
       theme: appTheme,
       home: const HomeScreen(),
     );

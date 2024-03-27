@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:wage_manager/utils/theme.dart';
 import '/screens/add_employee_screen.dart';
 import '/services/hive_service.dart';
 import '/widgets/employee_list_tile.dart';
-// import '/models/employee_model.dart' as original_employee;
 import '/models/employee_model.dart';
+// import '/models/employee_model.dart' as original_employee;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -37,7 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Employee Manager'),
+        title: const Text('Wage Manager'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -58,23 +65,31 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.add,
-              size: 42,
-            ),
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return AddEmployeeScreen(
-                    addEmployee: (dynamic employee) => addEmployee(employee),
-                  );
-                },
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryColor,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 30,
+        ),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled:
+                true, // Set to true to cover the middle of the screen
+            builder: (context) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height *
+                    0.7, // Adjust the height as needed
+                child: AddEmployeeScreen(
+                  addEmployee: (dynamic employee) => addEmployee(employee),
+                ),
               );
             },
-          ),
-        ],
+          );
+        },
       ),
     );
   }
