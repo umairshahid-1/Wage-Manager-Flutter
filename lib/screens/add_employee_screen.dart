@@ -65,11 +65,17 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         totalAmount: fixedSalary,
         imagePath: _imagePath,
         phoneNumber: _phoneController.text,
-        amountReceived: 250,
+        amountReceived: 0,
       );
       widget.addEmployee(employee);
       Navigator.pop(context);
     }
+  }
+
+  bool _isValidName(String value) {
+    //regular expression pattern to allow only letters, spaces, and hyphens
+    RegExp nameRegExp = RegExp(r'^[a-zA-Z\s\-]+$');
+    return nameRegExp.hasMatch(value);
   }
 
   @override
@@ -106,6 +112,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a name';
+                } else if (!_isValidName(value)) {
+                  return 'Please enter a valid name without special characters';
                 }
                 return null;
               },
@@ -118,7 +126,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                   const TextInputType.numberWithOptions(decimal: false),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a number';
+                  return null;
                 } else if (value.length != 11) {
                   return 'Please enter a valid number';
                 }

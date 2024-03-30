@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+
 part 'employee_model.g.dart';
 
 @HiveType(typeId: 0)
@@ -7,7 +8,7 @@ class Employee extends HiveObject {
   final int id;
 
   @HiveField(1)
-  final String name;
+  String name;
 
   @HiveField(2)
   int workingDays;
@@ -24,6 +25,9 @@ class Employee extends HiveObject {
   @HiveField(6)
   String? phoneNumber;
 
+  @HiveField(7)
+  List<WorkingDay> workingDaysList;
+
   Employee({
     required this.id,
     required this.name,
@@ -32,5 +36,14 @@ class Employee extends HiveObject {
     this.amountReceived = 0,
     this.imagePath,
     this.phoneNumber,
+    this.workingDaysList = const [],
   });
+}
+
+@HiveType(typeId: 1)
+class WorkingDay {
+  @HiveField(0)
+  final DateTime date;
+
+  WorkingDay({required this.date});
 }

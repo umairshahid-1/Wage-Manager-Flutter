@@ -24,13 +24,14 @@ class EmployeeAdapter extends TypeAdapter<Employee> {
       amountReceived: fields[4] as int,
       imagePath: fields[5] as String?,
       phoneNumber: fields[6] as String?,
+      workingDaysList: (fields[7] as List).cast<WorkingDay>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Employee obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class EmployeeAdapter extends TypeAdapter<Employee> {
       ..writeByte(5)
       ..write(obj.imagePath)
       ..writeByte(6)
-      ..write(obj.phoneNumber);
+      ..write(obj.phoneNumber)
+      ..writeByte(7)
+      ..write(obj.workingDaysList);
   }
 
   @override
@@ -54,6 +57,40 @@ class EmployeeAdapter extends TypeAdapter<Employee> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is EmployeeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class WorkingDayAdapter extends TypeAdapter<WorkingDay> {
+  @override
+  final int typeId = 1;
+
+  @override
+  WorkingDay read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return WorkingDay(
+      date: fields[0] as DateTime,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, WorkingDay obj) {
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.date);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WorkingDayAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

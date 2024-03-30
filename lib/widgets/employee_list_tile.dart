@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../screens/employee_details_screen.dart';
-// import '/models/employee.dart' as original_employee;
+import '../utils/theme.dart';
 import '/models/employee_model.dart';
 
 class EmployeeListTile extends StatelessWidget {
@@ -20,19 +20,30 @@ class EmployeeListTile extends StatelessWidget {
       leading: CircleAvatar(
         backgroundImage: employee.imagePath != null
             ? FileImage(File(employee.imagePath!))
-            : const AssetImage('assets/images/placeholder.png')
-                as ImageProvider,
+            : null,
+        backgroundColor: Colors.grey.shade200,
+        child: employee.imagePath == null
+            ? const Icon(
+                Icons.person_2,
+                size: 30.0,
+                color: primaryColorDark,
+              )
+            : null,
       ),
       title: Text(employee.name),
       subtitle: Text('Working Days: ${employee.workingDays}'),
       trailing: Text('Total Amount: ${employee.totalAmount}'),
       onTap: () {
         showModalBottomSheet(
+          isScrollControlled: true,
           context: context,
           builder: (context) {
-            return EmployeeDetailsScreen(
-              employee: employee,
-              updateEmployee: updateEmployee,
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.8,
+              child: EmployeeDetailsScreen(
+                employee: employee,
+                updateEmployee: updateEmployee,
+              ),
             );
           },
         );
