@@ -79,7 +79,6 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
   void _updateAmountRemaining() {
     final amountRemaining = _employee.totalAmount - _employee.amountReceived;
     if (amountRemaining >= 0) {
-      _employee.amountReceived = _employee.totalAmount;
       _amountReceivedController.text =
           _employee.amountReceived.toStringAsFixed(0);
     }
