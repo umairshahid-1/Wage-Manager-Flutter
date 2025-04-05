@@ -7,6 +7,7 @@ class HiveService {
   static Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(EmployeeAdapter());
+    Hive.registerAdapter(WorkingDayAdapter());
     await Hive.openBox<Employee>(_employeesBoxName);
   }
 

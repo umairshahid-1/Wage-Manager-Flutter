@@ -12,7 +12,7 @@ class ReusableTextField extends StatelessWidget {
     required this.labelText,
     required this.controller,
     required this.keyboardType,
-    this.validator,
+    this.validator, required TextInputAction textInputAction,
   });
 
   @override

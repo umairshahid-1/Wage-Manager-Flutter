@@ -71,17 +71,17 @@ class WorkingDayAdapter extends TypeAdapter<WorkingDay> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return WorkingDay(
-      date: fields[0] as DateTime,
-    );
+    return WorkingDay(date: fields[0] as DateTime, isPaid: fields[1] as bool);
   }
 
   @override
   void write(BinaryWriter writer, WorkingDay obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.date);
+      ..write(obj.date)
+      ..writeByte(1)
+      ..write(obj.isPaid);
   }
 
   @override

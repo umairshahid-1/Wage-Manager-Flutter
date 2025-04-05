@@ -1,0 +1,2 @@
+D:/Programming/Flutter/Wage-Manager-Flutter/android/app/.cxx/RelWithDebInfo/1u1860y2/x86/CMakeFiles/edit_cache.dir
+D:/Programming/Flutter/Wage-Manager-Flutter/android/app/.cxx/RelWithDebInfo/1u1860y2/x86/CMakeFiles/rebuild_cache.dir

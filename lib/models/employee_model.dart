@@ -36,8 +36,8 @@ class Employee extends HiveObject {
     this.amountReceived = 0,
     this.imagePath,
     this.phoneNumber,
-    this.workingDaysList = const [],
-  });
+    List<WorkingDay>? workingDaysList,
+  }) : workingDaysList = workingDaysList ?? [];
 }
 
 @HiveType(typeId: 1)
@@ -45,5 +45,8 @@ class WorkingDay {
   @HiveField(0)
   final DateTime date;
 
-  WorkingDay({required this.date});
+  @HiveField(1)
+  bool isPaid;
+
+  WorkingDay({required this.date, this.isPaid = false});
 }

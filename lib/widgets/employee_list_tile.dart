@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import '../screens/employee_details_screen.dart';
+import '../screens/employee_details.dart';
 import '../utils/theme.dart';
 import '/models/employee_model.dart';
 

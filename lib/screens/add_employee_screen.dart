@@ -8,6 +8,7 @@ import '/widgets/reusable_text_field.dart';
 
 class AddEmployeeScreen extends StatefulWidget {
   final Function(Employee) addEmployee;
+
   const AddEmployeeScreen({super.key, required this.addEmployee});
 
   @override
@@ -25,25 +26,26 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
     final ImagePicker picker = ImagePicker();
     final source = await showDialog<ImageSource>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Select Image Source'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, ImageSource.camera),
-            child: const Text(
-              'Camera',
-              style: TextStyle(color: primaryColorDark),
-            ),
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Select Image Source'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, ImageSource.camera),
+                child: const Text(
+                  'Camera',
+                  style: TextStyle(color: primaryColorDark),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, ImageSource.gallery),
+                child: const Text(
+                  'Gallery',
+                  style: TextStyle(color: primaryColorDark),
+                ),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, ImageSource.gallery),
-            child: const Text(
-              'Gallery',
-              style: TextStyle(color: primaryColorDark),
-            ),
-          ),
-        ],
-      ),
     );
 
     if (source != null) {
@@ -58,6 +60,9 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
 
   void _addEmployee() {
     if (_formKey.currentState!.validate()) {
+      // Create initial working day entry for today
+      final initialWorkingDay = WorkingDay(date: DateTime.now(), isPaid: false);
+
       final employee = Employee(
         id: DateTime.now().millisecondsSinceEpoch,
         name: _nameController.text,
@@ -66,6 +71,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         imagePath: _imagePath,
         phoneNumber: _phoneController.text,
         amountReceived: 0,
+        workingDaysList: [initialWorkingDay], // Initialize with today's entry
       );
       widget.addEmployee(employee);
       Navigator.pop(context);
@@ -73,8 +79,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   }
 
   bool _isValidName(String value) {
-    //regular expression pattern to allow only letters, spaces, and hyphens
-    RegExp nameRegExp = RegExp(r'^[a-zA-Z\s\-]+$');
+    //regular expression pattern to allow only letters, spaces
+    RegExp nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
     return nameRegExp.hasMatch(value);
   }
 
@@ -94,13 +100,14 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 backgroundImage:
                     _imagePath != null ? FileImage(File(_imagePath!)) : null,
                 backgroundColor: Colors.grey.shade200,
-                child: _imagePath == null
-                    ? const Icon(
-                        Icons.person_2,
-                        size: 50.0,
-                        color: primaryColorDark,
-                      )
-                    : null,
+                child:
+                    _imagePath == null
+                        ? const Icon(
+                          Icons.person_2,
+                          size: 50.0,
+                          color: primaryColorDark,
+                        )
+                        : null,
               ),
             ),
             const SizedBox(height: 26.0),
@@ -109,6 +116,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
               labelText: 'Name',
               controller: _nameController,
               keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.next,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a name';
@@ -122,8 +130,10 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
             ReusableTextField(
               labelText: 'Phone Number',
               controller: _phoneController,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: false),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: false,
+              ),
+              textInputAction: TextInputAction.done,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return null;
@@ -146,9 +156,10 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
               child: const Text(
                 'Add',
                 style: TextStyle(
-                    fontSize: 16.0,
-                    color: primaryColorDark,
-                    fontWeight: FontWeight.bold),
+                  fontSize: 16.0,
+                  color: primaryColorDark,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

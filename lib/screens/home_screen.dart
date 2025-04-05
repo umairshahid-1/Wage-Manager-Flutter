@@ -5,7 +5,6 @@ import '/screens/add_employee_screen.dart';
 import '/services/hive_service.dart';
 import '/widgets/employee_list_tile.dart';
 import '/models/employee_model.dart';
-// import '/models/employee_model.dart' as original_employee;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,12 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wage Manager'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {},
-          ),
-        ],
+        actions: [IconButton(icon: const Icon(Icons.add), onPressed: () {})],
       ),
       body: Column(
         children: [
@@ -69,11 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryColor,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 30,
-        ),
+        child: const Icon(Icons.add, color: Colors.white, size: 30),
         onPressed: () {
           showModalBottomSheet(
             context: context,
@@ -81,7 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 true, // Set to true to cover the middle of the screen
             builder: (context) {
               return SizedBox(
-                height: MediaQuery.of(context).size.height *
+                height:
+                    MediaQuery.of(context).size.height *
                     0.7, // Adjust the height as needed
                 child: AddEmployeeScreen(
                   addEmployee: (dynamic employee) => addEmployee(employee),
