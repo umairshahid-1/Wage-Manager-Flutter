@@ -6,13 +6,17 @@ class ReusableTextField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
+  final IconData? prefixIcon;
+  final TextInputAction textInputAction;
 
   const ReusableTextField({
     super.key,
     required this.labelText,
     required this.controller,
     required this.keyboardType,
-    this.validator, required TextInputAction textInputAction,
+    required this.textInputAction,
+    this.validator,
+    this.prefixIcon,
   });
 
   @override
@@ -20,13 +24,20 @@ class ReusableTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
+      textInputAction: textInputAction,
       style: const TextStyle(fontWeight: FontWeight.w500),
       cursorColor: primaryColorLight,
       onTapOutside: (_) => FocusScope.of(context).unfocus(),
       decoration: InputDecoration(
         labelText: labelText,
+        prefixIcon:
+            prefixIcon != null
+                ? Icon(prefixIcon, color: primaryColorLight)
+                : null,
         labelStyle: const TextStyle(
-            fontWeight: FontWeight.bold, color: primaryColorLight),
+          fontWeight: FontWeight.bold,
+          color: primaryColorLight,
+        ),
         filled: true,
         fillColor: Colors.grey.shade200,
         border: OutlineInputBorder(

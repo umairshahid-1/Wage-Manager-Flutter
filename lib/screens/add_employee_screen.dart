@@ -67,7 +67,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         id: DateTime.now().millisecondsSinceEpoch,
         name: _nameController.text,
         workingDays: 1,
-        totalAmount: fixedSalary,
+        totalAmount: AppConstants.fixedSalary,
         imagePath: _imagePath,
         phoneNumber: _phoneController.text,
         amountReceived: 0,
@@ -111,8 +111,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
               ),
             ),
             const SizedBox(height: 26.0),
+
             ReusableTextField(
-              // For name
               labelText: 'Name',
               controller: _nameController,
               keyboardType: TextInputType.text,
@@ -125,8 +125,11 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 }
                 return null;
               },
+              prefixIcon: Icons.person_outline,
             ),
+
             const SizedBox(height: 26.0),
+
             ReusableTextField(
               labelText: 'Phone Number',
               controller: _phoneController,
@@ -142,6 +145,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 }
                 return null;
               },
+              prefixIcon: Icons.phone_outlined,
             ), // For phone number
             const SizedBox(height: 26.0),
             ElevatedButton(

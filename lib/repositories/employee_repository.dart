@@ -36,7 +36,7 @@ class EmployeeRepository {
 
   int calculatePaidAmount(Employee employee) {
     return employee.workingDaysList.where((day) => day.isPaid).length *
-        fixedSalary;
+        AppConstants.fixedSalary;
   }
 
   int calculateRemainingAmount(Employee employee) {

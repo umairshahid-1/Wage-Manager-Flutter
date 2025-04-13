@@ -36,7 +36,7 @@ class EmployeeProvider extends ChangeNotifier {
   Future<void> addWorkingDay(Employee employee, DateTime date) async {
     employee.workingDaysList.add(WorkingDay(date: date));
     employee.workingDays = employee.workingDaysList.length;
-    employee.totalAmount = employee.workingDays * fixedSalary;
+    employee.totalAmount = employee.workingDays * AppConstants.fixedSalary;
     await _repository.updateEmployee(employee);
     notifyListeners();
   }
@@ -44,9 +44,16 @@ class EmployeeProvider extends ChangeNotifier {
   Future<void> removeWorkingDay(Employee employee, int index) async {
     employee.workingDaysList.removeAt(index);
     employee.workingDays = employee.workingDaysList.length;
-    employee.totalAmount = employee.workingDays * fixedSalary;
+    employee.totalAmount = employee.workingDays * AppConstants.fixedSalary;
     employee.amountReceived = _repository.calculatePaidAmount(employee);
     await _repository.updateEmployee(employee);
+    notifyListeners();
+  }
+
+  Future<void> deleteMultipleEmployees(List<Employee> employees) async {
+    for (var employee in employees) {
+      await _repository.deleteEmployee(employee);
+    }
     notifyListeners();
   }
 }

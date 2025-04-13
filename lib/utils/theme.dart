@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 
 // Define color constants
 const Color primaryColor = Color(0xFF4CAF50); // Green color
-const Color primaryColorLight =
-    Color.fromARGB(255, 101, 169, 23); // Light shade of green
+const Color primaryColorLight = Color.fromARGB(
+  255,
+  101,
+  169,
+  23,
+); // Light shade of green
 const Color primaryColorDark = Color(0xFF388E3C); // Dark shade of green
 const Color secondaryColor = Color.fromARGB(255, 158, 158, 158); // grey color
 

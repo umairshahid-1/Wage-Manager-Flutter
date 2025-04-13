@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wage_manager/widgets/reusable_text_field.dart';
 import '/models/employee_model.dart';
 import '/utils/constants.dart';
 import '/utils/theme.dart';
@@ -16,6 +17,7 @@ class EmployeeDetailsScreen extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _EmployeeDetailsScreenState createState() => _EmployeeDetailsScreenState();
 }
 
@@ -37,11 +39,11 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
   // Calculate paid and remaining amounts based on workingDaysList
   void _calculatePaymentSummary() {
     int paidDays = _employee.workingDaysList.where((day) => day.isPaid).length;
-    int paidAmount = paidDays * fixedSalary;
+    int paidAmount = paidDays * AppConstants.fixedSalary;
 
     setState(() {
       _employee.workingDays = _employee.workingDaysList.length;
-      _employee.totalAmount = _employee.workingDays * fixedSalary;
+      _employee.totalAmount = _employee.workingDays * AppConstants.fixedSalary;
       _employee.amountReceived = paidAmount;
     });
   }
@@ -80,6 +82,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
           _calculatePaymentSummary();
         });
       } else {
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('This date already exists')),
         );
@@ -133,6 +136,12 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
       'Sunday',
     ];
     return weekdays[date.weekday - 1];
+  }
+
+  bool _isValidName(String value) {
+    //regular expression pattern to allow only letters, spaces
+    RegExp nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
+    return nameRegExp.hasMatch(value);
   }
 
   @override
@@ -191,31 +200,42 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
                 ),
                 const SizedBox(height: 24.0),
 
-                // Name and phone fields
-                TextFormField(
+                ReusableTextField(
+                  labelText: 'Name',
                   controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.person_outline),
-                  ),
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a name';
+                    } else if (!_isValidName(value)) {
+                      return 'Please enter a valid name without special characters';
                     }
                     return null;
                   },
+                  prefixIcon: Icons.person_outline,
                 ),
+
                 const SizedBox(height: 16.0),
 
-                TextFormField(
+                ReusableTextField(
+                  labelText: 'Phone Number',
                   controller: _phoneController,
-                  decoration: const InputDecoration(
-                    labelText: 'Phone Number',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.phone_outlined),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: false,
                   ),
-                ),
+                  textInputAction: TextInputAction.done,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return null;
+                    } else if (value.length != 11) {
+                      return 'Please enter a valid number';
+                    }
+                    return null;
+                  },
+                  prefixIcon: Icons.phone_outlined,
+                ), // For phone number
+
                 const SizedBox(height: 24.0),
 
                 // Working days and salary info
@@ -338,7 +358,9 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
                         margin: const EdgeInsets.symmetric(vertical: 4),
                         child: ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: primaryColorLight.withOpacity(0.2),
+                            backgroundColor: primaryColorLight.withValues(
+                              alpha: 0.2,
+                            ),
                             child: Text(
                               workingDay.date.day.toString(),
                               style: const TextStyle(

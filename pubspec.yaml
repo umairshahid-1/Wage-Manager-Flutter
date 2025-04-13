@@ -44,6 +44,11 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^2.4.8
   hive_generator: ^2.0.1
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  image_path: "lib/utils/Icon.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
