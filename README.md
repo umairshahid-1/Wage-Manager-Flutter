@@ -1,38 +1,141 @@
-### Wage Manager App
+# Wage Manager Flutter
 
-#### Overview
-The Wage Manager app is a Flutter-based application designed to manage employee records, including working days, total salary, and amount received. This app provides a user-friendly interface for adding, updating, and viewing employee details. 
+A Flutter application designed to calculate and manage wage history of laborers. This app provides a comprehensive solution for tracking employee attendance, managing payments, and calculating wages efficiently.
 
-#### Features
-- Add new employees with details such as name, phone number, and profile picture.
-- Track the number of working days, total salary, and amount received for each employee.
-- Update employee records, including their working days and salary calculations.
-- View a list of all employees with their current details.
-- Persistent storage using Hive for offline data management.
+## 📱 Features
 
-#### Tech Stack
-- **Flutter**: The primary framework used for building the application.
-- **Dart**: The programming language used in Flutter.
-- **Hive**: A lightweight and fast key-value database used for local storage.
-- **Image Picker**: For selecting images from the gallery or capturing photos.
+- **Employee Management**
+  - Add, edit, and delete employee records
+  - Store employee photos
+  - Maintain contact information
+  - Track individual employee history
 
-#### Architecture
-The app follows a simple and modular architecture:
-- **Main.dart**: The entry point of the app. It initializes Hive and runs the `MyApp` widget.
-- **Screens**: This contains the UI for different screens, such as the Homescreen, AddEmployeeScreen, and EmployeeDetailsScreen.
-- **Models**: Defines the data structures used in the app, such as `Employee` and `WorkingDay`.
-- **Services**: Contains the HiveService class for initializing and accessing the Hive database.
-- **Widgets**: Reusable UI components like `EmployeeListTile` and `ReusableTextField`.
-- **Utils**: Utility files for themes and constants.
+- **Wage Tracking**
+  - Daily attendance recording
+  - Automatic wage calculation
+  - Payment status tracking
+  - Detailed payment history
 
-#### File Descriptions
-- **main.dart**: Initializes Hive and sets up the main app structure.
-- **theme.dart**: Defines the app's theme and colour scheme.
-- **home_screen.dart**: The main screen displays a list of employees.
-- **add_employee_screen.dart**: A screen for adding a new employee.
-- **employee_details_screen.dart**: A screen for viewing and updating employee details.
-- **hive_service.dart**: Manages the initialization and access to the Hive database.
-- **constants.dart**: Contains constant values used in the app.
-- **employee_model.dart**: Defines the `Employee` and `WorkingDay` classes with Hive annotations for database storage.
-- **employee_list_tile.dart**: A widget for displaying an employee in a list.
-- **reusable_text_field.dart**: A reusable text field widget with validation.
+- **Smart Calculations**
+  - Fixed salary rate management
+  - Automatic total amount calculation
+  - Paid vs. unpaid day tracking
+  - Real-time payment summaries
+
+## 🏗️ Project Structure
+
+```
+lib/
+├── models/           # Data models and Hive adapters
+├── repositories/     # Business logic and data operations
+├── screens/         # UI screens
+├── services/        # Core services (Hive, etc.)
+├── utils/           # Constants and theme
+└── widgets/         # Reusable UI components
+```
+
+## 🛠️ Technologies Used
+
+### Core
+- **Flutter/Dart**: Main development framework
+- **Provider**: State management
+- **Hive**: Local NoSQL database
+
+### Architecture
+- Repository Pattern
+- Provider Pattern
+- Clean Architecture principles
+
+### Dependencies
+- `provider`: State management
+- `hive`: Local database
+- `image_picker`: Image selection
+- `material`: UI components
+
+## 💾 Data Management
+
+### Local Storage
+- Uses Hive NoSQL database
+- Offline-first architecture
+- Efficient data serialization
+- Persistent settings storage
+
+### Models
+- **Employee Model**
+  ```dart
+  class Employee {
+    int id;
+    String name;
+    int workingDays;
+    int totalAmount;
+    int amountReceived;
+    String? imagePath;
+    String? phoneNumber;
+    List<WorkingDay> workingDaysList;
+  }
+  ```
+
+- **WorkingDay Model**
+  ```dart
+  class WorkingDay {
+    DateTime date;
+    bool isPaid;
+  }
+  ```
+
+## 🎨 UI Components
+
+### Custom Widgets
+- Reusable text fields
+- Employee list tiles
+- Custom theme implementation
+- Material Design components
+
+### Theming
+- Custom color scheme (Green-based)
+- Consistent styling
+- Responsive design
+- User-friendly interface
+
+## 🚀 Getting Started
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/umairshahid-1/Wage-Manager-Flutter.git
+   ```
+
+2. **Install dependencies**
+   ```bash
+   flutter pub get
+   ```
+
+3. **Run the app**
+   ```bash
+   flutter run
+   ```
+
+## 📦 Dependencies
+
+Add the following dependencies to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.0.0
+  hive: ^2.2.3
+  image_picker: ^0.8.5
+```
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check [issues page](https://github.com/umairshahid-1/Wage-Manager-Flutter/issues).
+
+
+## 👤 Author
+
+**Muhammad Umair Shahid**
+- GitHub: [@umairshahid-1](https://github.com/umairshahid-1)
+
+---
+*Last updated: 2025-05-06*
